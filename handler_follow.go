@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func HandlerFollow(s* State, cmd command) error{
+func HandlerFollow(s* State, cmd command, database.User) error{
 	args := cmd.arguments
 	if len(args) < 1 {
 		return errors.New("Not enough arguments")

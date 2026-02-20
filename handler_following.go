@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+
+	"github.com/arturaciolii/gator/internal/database"
 )
 
-func HandlerFollowing(s *State, cmd command) error{
+func HandlerFollowing(s *State, cmd command, user database.User) error{
 	userName := s.cfg.Username
 
 	user, err := s.db.GetUser(context.Background(),userName)
