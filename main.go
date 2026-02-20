@@ -36,7 +36,15 @@ func main(){
 
 	commands.register("login",HandlerLogin)
 	commands.register("register",HandlerRegister)
-	
+	commands.register("reset", HandlerReset)	
+	commands.register("users", HandlerUsers)
+	commands.register("agg", HandlerAgg)
+	commands.register("addfeed", HandlerAddFeed)
+	commands.register("feeds", HandlerFeeds)
+	commands.register("follow", HandlerFollow)
+	commands.register("following", HandlerFollowing)
+
+
 	if len(os.Args) < 2{
 		fmt.Println("Not enough arguments")
 		os.Exit(1)
@@ -53,6 +61,7 @@ func main(){
 	err = commands.run(&state,command)
 
 	if err != nil{
+		fmt.Print(err)
 		os.Exit(1)
 	}
 
