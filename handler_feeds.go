@@ -4,10 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/arturaciolii/gator/internal/database"
 )
 
-func HandlerFeeds(s* State, cmd command, user database.User) error{
+func HandlerFeeds(s* State, cmd command) error{
 
 	rfeeds, err := s.db.GetFeeds(context.Background())
 	if err != nil {

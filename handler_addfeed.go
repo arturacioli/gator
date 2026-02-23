@@ -10,14 +10,13 @@ import (
 	"github.com/google/uuid"
 )
 
-func HandlerAddFeed(s* State, cmd command) error{
+func HandlerAddFeed(s* State, cmd command, usr *database.User) error{
 	args := cmd.arguments
 	if len(args) < 2{
 		return errors.New("Not enough arguments")
 	}
 
-	currentUserName := s.cfg.Username
-	user,err := s.db.GetUser(context.Background(),currentUserName)
+	user,err := s.db.GetUser(context.Background(),usr.Name)
 	if err != nil{
 		return errors.New("current user wasn't found")
 	}

@@ -32,18 +32,19 @@ func main(){
 		cfg: &conf,
 	}
 	commands := Commands{
-			cmds : make(map[string]func(*State, command, *database.User) error),
+			cmds : make(map[string]func(*State, command) error),
 	}
 
-	commands.register("login",   middlewareLoggedIn(HandlerLogin)
-	commands.register("register",middlewareLoggedIn(HandlerRegister)
-	commands.register("reset",   middlewareLoggedIn(HandlerReset)	
-	commands.register("users",   middlewareLoggedIn(HandlerUsers)
-	commands.register("agg",  	 middlewareLoggedIn(HandlerAgg)
-	commands.register("addfeed", middlewareLoggedIn(HandlerAddFeed)
-	commands.register("feeds", middlewareLoggedIn(HandlerFeeds))
+	commands.register("login",   HandlerLogin)
+	commands.register("register",HandlerRegister)
+	commands.register("reset",   HandlerReset)	
+	commands.register("users",   HandlerUsers)
+	commands.register("agg",  	 HandlerAgg)
+	commands.register("addfeed", middlewareLoggedIn(HandlerAddFeed))
+	commands.register("feeds", HandlerFeeds)
 	commands.register("follow", middlewareLoggedIn(HandlerFollow))
 	commands.register("following", middlewareLoggedIn(HandlerFollowing))
+	commands.register("unfollow", middlewareLoggedIn(HandlerUnfollow))
 
 
 	if len(os.Args) < 2{
@@ -68,12 +69,12 @@ func main(){
 
 }
 
-func middlewareLoggedIn(handler func(s *State, cmd command, user database.User) error) func(*State, command) error{
+func middlewareLoggedIn(handler func(s *State, cmd command, user *database.User) error) func(*State, command) error{
 	return func(s *State, cmd command) error{
 		user, err := s.db.GetUser(context.Background(), s.cfg.Username)
 		if err != nil {
 			return err
 		}
-		return handler(s,cmd,user)
+		return handler(s,cmd,&user)
 	}
 }

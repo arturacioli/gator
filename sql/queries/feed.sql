@@ -17,3 +17,5 @@ SELECT * FROM feeds as f inner join users as u on f.user_id = u.id;
 -- name: GetFeed :one
 SELECT * FROM feeds WHERE url = $1;
 
+-- name: MarkFeedFetched :exec
+UPDATE feeds SET last_fetched_at = $2 WHERE id = $1;

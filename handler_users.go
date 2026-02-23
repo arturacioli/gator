@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+
 )
 func HandlerUsers(s* State, cmd command) error{
 	foundUsers,err := s.db.GetUsers(context.Background())
