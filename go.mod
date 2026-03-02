@@ -1,4 +1,4 @@
-module github.com/arturaciolii/gator
+module github.com/arturacioli/gator
 
 go 1.25.7
 
