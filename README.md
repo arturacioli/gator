@@ -14,8 +14,8 @@
 
 - USAGE
   
-    gator register <username>
-    gator login <username>
-    gator addfeed <name> <url>
-    gator agg
+  -  gator register <username>
+  -  gator login <username>
+  -  gator addfeed <name> <url>
+  -  gator agg
 
