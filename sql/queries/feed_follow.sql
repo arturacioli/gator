@@ -18,7 +18,7 @@ FROM inserted_feed_follow ff
 INNER JOIN feeds ON feeds.id = ff.feed_id
 INNER JOIN users ON users.id = ff.user_id 
 ;
-
+	
 -- name: GetFeedFollowsForUser :many
 SELECT 
     f.name AS feed_name,
