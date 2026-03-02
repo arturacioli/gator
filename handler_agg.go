@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 	"github.com/lib/pq"
-	"github.com/arturaciolii/gator/internal/database"
+	"github.com/arturacioli/gator/internal/database"
 	"github.com/google/uuid"
 )
 
