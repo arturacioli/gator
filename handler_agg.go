@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-
+	"github.com/lib/pq"
 	"github.com/arturaciolii/gator/internal/database"
 	"github.com/google/uuid"
 )
@@ -48,22 +48,49 @@ func scrapeFeeds(s* State) error{
 	}
 
 	err = s.db.MarkFeedFetched(context.Background(),markNextFeedParam)
+	if err != nil{
+		return err
+	}	
 
 	fetchedFeed,err := fetchFeed(context.Background(),nextFeed.Url)
+	if err != nil{
+		return err 
+	}
+
 
 	for _,item := range fetchedFeed.Channel.Item{
-		time.Parse()
+		titleNull := sql.NullString{
+			String: item.Title,
+			Valid: true,
+		}
+		descNull := sql.NullString{
+			String: item.Description,
+			Valid: true,
+		}
+		pubAt, err := time.Parse(time.RFC1123Z, item.PubDate)
+		if err != nil{
+			fmt.Println("Error parsing published date")
+			pubAt = nullTime.Time;
+		}
+
 		newPost := database.CreatePostParams{
 			ID: uuid.New(),
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
-			Title: item.Title,
+			Title: titleNull,
 			Url: item.Link,
-			Description: item.Description,
-			PublishedAt: item.PubDate,
-
+			Description: descNull,
+			PublishedAt: pubAt,
+			FeedID: nextFeed.ID,	
 		}
-
+		_, err = s.db.CreatePost(context.Background(),newPost)
+		if err != nil{
+			if pqErr, ok := err.(*pq.Error); ok && pqErr.Code == "23505" {
+				continue	
+			}
+			return err
+		}
+		fmt.Printf("Created post: %s\n",item.Title)
 
 
 	}
